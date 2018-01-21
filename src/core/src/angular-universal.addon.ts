@@ -1,12 +1,52 @@
+import "reflect-metadata";
+
+import { ngExpressEngine } from "@nguniversal/express-engine";
+// Import module map for lazy loading
+const {
+	provideModuleMap
+} = require("@nguniversal/module-map-ngfactory-loader");
+import { join } from "path";
+const {
+	AppServerModuleNgFactory,
+	LAZY_MODULE_MAP
+} = require(__dirname + "/../../../client/dist/server/main.bundle");
 export class AngularUniversalAddon {
 	public static displayName = "Angular Universal";
-	public static logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAACrCAMAAAD8Q8FaAAAAsVBMVEX///8lggAUsAMkhAATswMArAAArgASfACx4K5jxVycwZOJtH4AeQAcfwAArwAMewCs3qmxzanf8936/vnb6ten3KPI6cW/5r3z+/Lq8+fW79RTwExFvD3R48xvp2H2/PXI3cKb15c9jiUwtyaJ0YRmo1iTvIjC579+zXnm9uWqyqJIkzJ1ynA5uS++2LgxihST1Y9ZoEp6r21Eki9uyGheoE6Cs3fQ7c53rmtcw1VPv0hS5+P5AAAE1UlEQVR4nO2c/1eiTBSHxxIwG0AltVpLzb7YalvtbvbW//+HvSBgxlyEwwHHvXyeX8c6M89hLpd7GYQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADhQei//TXTP4dC56D8Zji2PVxPdMzlcxq0fhuEcNY8bjcDUle75HCQPJ6ZhHvkEmhprU6cw9Z33uRM6+tLkY/mmznRP7WDo3TY3jr5pWpt6vocpIR6ns21HSU2hqXa9TZ13PhOOCE1+mLLkTftC92Q14Q39oO0kJVGaQlOLOpoaLB31QkrXFJn6WStTl9+Ddj5NoanXupjqvSSDdm5NgSnXfe2e615D1QRPI7scZWoKTb1xNhU9jWSQqSky9Wusez3VsDSyLqTcmtamJM8o9SOPpNyafFGe7hVVwrxkTTe6F1QN03I12W+6F1QNLaNcTSvdC6qG9xRNxhqT0OTf0AJsUpPV1r2ganikNY1aHZ/WUq032dfdNXekJ/eX7gVVw5iMTeZJOLrZkltlueh6OSU1Sa61zWapmlyeaZMQT6VqYpo2CXFC7bqimmymaZMQt6VqYpo2CdEvVRPTtEmIIZURFNXENW0S4rJMTVzTppT8sqgmybYp5ZUZm5hWmwKo/LJwCOeaNgnxSVR4i2p61reMqlkSu66gJvtO3zKq5qVETWzTJiE6xK2uoCbrp75lVM2gPE180yYheuVp4ps2CXFeoia+aZMQJYZwfYuonllZmvhWmwI+1MupoCa21aYAovFbTJN1qm8R1UM0fgtqYpw2kY3fYpo4p01k47eYJs5pE1mYK6iJ8dtyQnhlabL0rWEfqIW5Qpp4p01CjJTCXKxpSGiKbmeEJsbVpoC/SkZgfoQj76qm+Ha2UjTxTpuoxq8zCkd6qqb4nZNrVRPrtEmIPlEjCEc8R9UU3c4WiibJOm0iG79GJCN+0XejKY7TXt3SJrLxawzCobgCvNFk3YcDZ1LVxDptIgtz5jwc8poJTW7kom0pmlhXmwKITp0TNSYfjG+aZDf6k5vapU1kYc7oRGNhfI80yWjLiYm657inTX6gps5jxn3uh2b8HQLXiq8l4mJinzalNH6X8ajXH5mmK61Fe3O8qe0qltinTXTj98hoff3Aezy72HqL4krdcv6GnOx93nuGPpERJwUKZ+pdrsE/baIbv4GnIfnrK2LHNfinTXTjd+3plvhxm9pxjRqkTWTjN/Q0S268qwV9LTXshZap7xXyREYoatT52kzj7qukTz4FR340zn9PzNIPHzqG8bScdrrd9mqRdjxsHZoYv9sUMzjaefrQNB3Ltex0Rw3Lvef72uUWfWfnadaMzzXI3+xvcxHe7a6T9rs02fKNfcq0xcXfQt9IkX+4HjVM4/IzLUSlanKPu9n/lx2DGS0qRZNlsz3Lk0GnSYmiP3MlV0w/iZID78VUQxShyZZ3nF+1zOZ8qcRyRZMtF3WL3Cq9j8S3ipKa3GfmTbmcDJ6MdE2Wzb5SmZvWdizf1mTL01o8mORlahLfSLHldb0jt8p4biSa47Z8rdODSV4eT8JYHvfpbia6Z3SgvI+MWJN1jMidztB/gPE1WVY9SkrFmTqOLX8jcmcxniNyAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPzT/A97A1IF9C8uCQAAAABJRU5ErkJggg==";
+	public static logo = "http://i1.wp.com/wassimchegham.com/wp/wp-content/uploads/2015/10/138338bc-7806-11e5-8057-d34c75f3cafc.png?w=1272";
 
 	public static installSettings = [];
 
-	constructor(private app: any, private config: any, private expressApp: any) {
+	constructor(
+		private app: any,
+		private config: any,
+		private expressApp: any
+	) {}
 
+	start() {
+		console.log("In start express app :", this.expressApp);
+		const DIST_FOLDER = this.app.path + "/client/dist";
+
+		// Express Engine
+
+		/* this.expressApp.engine(
+			"html",
+			ngExpressEngine({
+				bootstrap: AppServerModuleNgFactory,
+				providers: [provideModuleMap(LAZY_MODULE_MAP)]
+			})
+		);
+
+		this.expressApp.set("view engine", "html");
+		this.expressApp.set("views", join(DIST_FOLDER, "browser"));
+
+		// All regular routes use the Universal engine
+		this.expressApp.get("*", (req, res) => {
+			res.render(join(DIST_FOLDER, "browser", "index.html"), { req });
+		});
 	}
 
-	start() {}
+	afterSave() {
+		console.log("In AFTER START express app :", this.expressApp);
+	}*/
+	}
 }

@@ -7,7 +7,9 @@
     "entryFile": "src/public_api.ts",
     "externals": {
 	  "@angular/material": "ng.material",
-	  "@angular/core": "ng.core"
+    "@angular/core": "ng.core",
+    "@nguniversal": "@nguniversal",
+    "@nguniversal/express-engine": "@nguniversal/express-engine"
     }
   }
 }

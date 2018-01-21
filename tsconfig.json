@@ -8,6 +8,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "preferBuiltins": true,
     "noUnusedParameters": false,
     "target": "es5",
     "typeRoots": [
