@@ -8,7 +8,6 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "preferBuiltins": true,
     "noUnusedParameters": false,
     "target": "es5",
     "typeRoots": [
@@ -17,10 +16,7 @@
     "lib": [
       "es2017",
       "dom"
-    ],
-    "paths": {
-      "@ngx-material-keyboard/core": [ "src/core/src/public_api.ts" ]
-    }
+    ]
   },
   "exclude": [
     ".ng_build"

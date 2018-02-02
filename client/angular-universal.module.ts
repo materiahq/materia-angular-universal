@@ -18,9 +18,6 @@ const FlexLayoutModule = (window as any).angular.flexLayout.FlexLayoutModule;
 // Components and directives
 import { AngularUniversalViewComponent } from "./components";
 
-// Addon class
-export { AngularUniversalAddon } from "./angular-universal.addon";
-
 @NgModule({
 	imports: [
 		// Angular modules
