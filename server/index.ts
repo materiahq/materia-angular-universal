@@ -1,17 +1,6 @@
-import "reflect-metadata";
-import { renderModuleFactory } from "@angular/platform-server";
-import { enableProdMode } from "@angular/core";
-
 import * as express from "express";
 import { join } from "path";
 import { readFileSync } from "fs";
-
-
-
-// Express Engine
-import { ngExpressEngine } from "@nguniversal/express-engine";
-// Import module map for lazy loading
-import { provideModuleMap } from "@nguniversal/module-map-ngfactory-loader";
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 
@@ -37,6 +26,13 @@ export class AngularUniversalAddon {
 	}
 
 	start() {
+		require(this.app.path + "/client/node_modules/reflect-metadata");
+		// Express Engine
+		const { ngExpressEngine } = require(this.app.path + "/client/node_modules/@nguniversal/express-engine");
+		// Import module map for lazy loading
+		const { provideModuleMap } = require(this.app.path + "/client/node_modules/@nguniversal/module-map-ngfactory-loader");
+		const { renderModuleFactory } = require(this.app.path + "/client/node_modules/@angular/platform-server");
+		const { enableProdMode } = require(this.app.path + "/client/node_modules/@angular/core");
 		// Faster server renders w/ Prod mode (dev mode never needed)
 		enableProdMode();
 
@@ -60,7 +56,13 @@ export class AngularUniversalAddon {
 		/* - Example Express Rest API endpoints -
 			this.expressApp.get("/api/**", (req, res) => { });
 		*/
-
+		this.app.api.registerEndpoints();
+		this.expressApp.all("/api/*", (req, res) => {
+			res.status(404).send({
+				error: true,
+				message: "API endpoint not found"
+			});
+		});
 		// Server static files from /browser
 		this.expressApp.get("*.*", express.static(join(DIST_FOLDER, "browser"), {
 			maxAge: "1y"

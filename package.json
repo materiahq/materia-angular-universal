@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/GeoAstronaute/materia-angular-universal#readme",
   "scripts": {
-    "build": "npm run build:core && npm run build:server && ncp server/ dist/server && rimraf dist/server/index.ts",
+    "build": "rimraf dist && rollup -c && npm run build:server && ncp server/ dist/server && rimraf dist/server/index.ts",
     "build:core": "ng-packagr",
     "build:server": "tsc -p ./tsconfig.server.json",
     "lint": "npm run lint:ts && npm run lint:sass",
@@ -22,11 +22,6 @@
     "postinstall": "npm rebuild node-sass"
   },
   "dependencies": {
-    "@angular/animations": "^5.2.0",
-    "@angular/cdk": "^5.1.0",
-    "@angular/common": "^5.2.0",
-    "@angular/core": "^5.2.0",
-    "@angular/forms": "5.2.0",
     "@angular/http": "5.2.0",
     "@angular/material": "^5.1.0",
     "@angular/platform-browser": "^5.2.0",
