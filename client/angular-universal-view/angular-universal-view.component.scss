@@ -1,0 +1,18 @@
+:host {
+  flex: 1;
+  display: flex;
+}
+
+h1,
+h2 {
+  font-size: 400;
+  color: #666;
+}
+
+mat-card {
+  padding: 5px 16px;
+}
+
+ul {
+  list-style-type: disc;
+}
