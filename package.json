@@ -1,6 +1,6 @@
 {
   "name": "@materia/angular-universal",
-  "version": "0.1.0",
+  "version": "1.0.0-beta.1",
   "description": "Use Server Side Rendering with angular in your materia applications",
   "author": "jeanmarc.royy@gmail.com",
   "license": "MIT",
