@@ -1,42 +1,65 @@
 <div fxFlex fxLayout="column">
-  <mat-card fxFlex fxLayout="column" fxFlex>
-    <div fxLayout="row">
-      <img src="https://cdn-images-1.medium.com/max/1199/1*IQU-Nfl1ylx3bN5q6Uf_iA.png" style="height: 80px;">
-    </div>
-    <div>
-      <h1>Angular Universal Addon allow you to enable Server Side Rendering (SSR) on your angular application</h1>
-    </div>
-    <div>
-      <h2>Advantages</h2>
-      <ol>
-        <li>Facilitate web crawlers (SEO)</li>
-        <li>Improve performance on mobile and low-powered devices</li>
-        <li>Show the first page quickly</li>
-      </ol>
-    </div>
-    <div>
-      <h2>To turn a regular angular application to a Universal App you will need to</h2>
-      <ul>
-        <li>
-          Install
-          <code>@angular/platform-server</code>
-        </li>
-        <li>a server-side app module,
-          <code>app.server.module.ts</code>
-        </li>
-        <li>an entry point for the server-side,
-          <code>main.server.ts</code>
-        </li>
-        <li>a TypeScript config file,
-          <code>tsconfig.server.json</code>
-        </li>
-        <li>
-          Modify your angular.json config files
-        </li>
-        <li>
-          Build your browser-side and server-side angular sources in AOT
-        </li>
-      </ul>
+  <mat-card fxFlex fxLayout="column">
+    <mat-toolbar fxLayout="row" fxLayoutAlign="start center">
+      Angular&nbsp; <img src="images/angular-universal.png">niversal Addon
+    </mat-toolbar>
+    <div fxFlex fxLayout="column" fxLayoutAlign="center center" class="container">
+      <div *ngIf="! tested" fxLayout="column">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <div *ngIf="isAngularProject && angularConfig && tested" fxLayout="column">
+        <div class="mat-headline" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon class="success">checked</mat-icon> Angular Project detected:&nbsp;<strong>{{ angularConfig.defaultProject }}</strong>
+        </div>
+        <div class="mat-headline" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon [ngClass]="{'success': isUniversal, 'error': ! isUniversal }">{{ isUniversal ? 'checked' : 'close' }}</mat-icon> Angular Project has Angular Universal support
+        </div>
+        <div class="mat-headline" *ngIf="isUniversal" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon [ngClass]="{'success': isCompiledForUniversal, 'error': ! isCompiledForUniversal }">{{ isCompiledForUniversal ? 'checked' : 'close' }}</mat-icon> Angular sources build for Angular Universal
+        </div>
+        <div *ngIf="isUniversal && ! isCompiledForUniversal" fxLayout="row" fxLayoutAlign="center center" style="min-height: 150px;">
+          <button mat-raised-button color="primary" (click)="launchProductionBuild()" *ngIf="! building">BUILD FOR PRODUCTION</button>
+          <div fxFlex fxLayout="column" fxLayoutAlign="start center" *ngIf="building">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+            <span style="margin: 10px;">Building angular application...</span>
+          </div>
+        </div>
+        <div class="mat-headline" *ngIf="isUniversal && isCompiledForUniversal" fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon [ngClass]="{'success': isSSRLaunched, 'error': ! isSSRLaunched }">{{ isSSRLaunched ? 'checked' : 'close' }}</mat-icon> Server Side Rendering started
+        </div>
+        <div *ngIf="isUniversal && isCompiledForUniversal" fxLayout="row" fxLayoutAlign="center center">
+          <button mat-raised-button color="primary" (click)="restartMateria()">{{ isSSRLaunched ? 'RESTART' : 'LAUNCH' }} SSR</button>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="center center" style="min-height: 150px;" *ngIf="isAngularProject && angularConfig && ! isUniversal && tested">
+        <div *ngIf="! schematicsRunning" fxLayout="column" fxLayoutAlign="center center">
+          <span style="margin: 15px;">You can run schematics to automatically add Angular Universal support</span>
+          <button mat-raised-button color="primary" (click)="runSchematics()">RUN SCHEMATICS</button>
+        </div>
+        <div fxFlex fxLayout="column" fxLayoutAlign="start center" *ngIf="schematicsRunning">
+          <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+          <span style="margin: 10px;">Universal Schematics are running in your Angular app...</span>
+        </div>
+      </div>
+
+      <div *ngIf=" ! isAngularProject && tested" fxFlex fxLayout="column" fxLayoutAlign="center center">
+          <span class="mat-headline" style="margin: 15px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon class="error">close</mat-icon>
+            Angular Application not found.
+          </span>
+          <div style="margin: 15px;" fxLayout="column" fxLayoutAlign="center center">
+              <span class="mat-title">If your already have an Angular Application please configure your client settings to point to it.</span>
+              <button mat-raised-button color="primary" (click)="openClientSettings()">CLIENT SETTINGS</button>
+          </div>
+          <div class="mat-title">
+            Or
+          </div>
+          <div style="margin: 15px;" fxLayout="column" fxLayoutAlign="center center">
+              <span class="mat-title">Initialize an Angular Application in the website tab</span>
+              <button mat-raised-button color="primary" (click)="goToWebsite()">GO TO WEBSITE</button>
+          </div>
+      </div>
     </div>
   </mat-card>
 </div>

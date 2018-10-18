@@ -1,0 +1,77 @@
+{
+  "virtual": true,
+  "queries": [
+    {
+      "id": "getAngularConfig",
+      "type": "custom",
+      "opts": {
+        "model": "angular-universal",
+        "action": "getAngularConfig",
+        "params": []
+      }
+    },
+    {
+      "id": "isAngular",
+      "type": "custom",
+      "opts": {
+        "model": "angular-universal",
+        "action": "isAngular",
+        "params": []
+      }
+    },
+    {
+      "id": "isCompiledForUniversal",
+      "type": "custom",
+      "opts": {
+        "model": "angular-universal",
+        "action": "isCompiledForUniversal",
+        "params": []
+      }
+    },
+    {
+      "id": "isSSRLaunched",
+      "type": "custom",
+      "opts": {
+        "model": "angular-universal",
+        "action": "isSSRLaunched",
+        "params": []
+      }
+    },
+    {
+      "id": "isUniversal",
+      "type": "custom",
+      "opts": {
+        "model": "angular-universal",
+        "action": "isUniversal",
+        "params": []
+      }
+    },
+    {
+      "id": "launchSSR",
+      "type": "custom",
+      "opts": {
+        "model": "angular-universal",
+        "action": "launchSSR",
+        "params": []
+      }
+    },
+    {
+      "id": "list",
+      "type": "custom",
+      "opts": {
+        "model": "angular-universal",
+        "action": "list",
+        "params": []
+      }
+    },
+    {
+      "id": "runUniversalSchematics",
+      "type": "custom",
+      "opts": {
+        "model": "angular-universal",
+        "action": "runUniversalSchematics",
+        "params": []
+      }
+    }
+  ]
+}

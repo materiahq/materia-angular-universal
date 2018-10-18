@@ -11,6 +11,8 @@
     },
     "include": [
         "server/index.ts",
-        "typings/index.d.ts"
+        "typings/index.d.ts",
+        "server/lib/angular-universal.lib.ts",
+        "server/models/queries/angular-universal.ts"
     ]
 }

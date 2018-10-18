@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -11,17 +12,21 @@ import {
   MatCardModule,
   MatIconModule,
   MatDialogModule,
-  MatInputModule
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatToolbarModule
 } from '@angular/material';
 
 import { Addon } from '@materia/addons';
 
 import { AngularUniversalViewComponent } from './angular-universal-view/angular-universal-view.component';
+import { OverviewComponent } from './components/overview/overview.component';
 
 @Addon('@materia/angular-universal')
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     MatRippleModule,
@@ -31,9 +36,11 @@ import { AngularUniversalViewComponent } from './angular-universal-view/angular-
     MatIconModule,
     MatDialogModule,
     MatInputModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatProgressSpinnerModule,
+    MatToolbarModule
   ],
-  declarations: [AngularUniversalViewComponent],
+  declarations: [AngularUniversalViewComponent, OverviewComponent],
   exports: [AngularUniversalViewComponent]
 })
 export class AngularUniversalModule {}

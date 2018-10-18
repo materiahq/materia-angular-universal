@@ -3,11 +3,5 @@
   "dest": "./dist/client",
   "lib": {
     "entryFile": "client/public_api.ts"
-  },
-  "whitelistedNonPeerDependencies": [
-    "tslib",
-    "@nguniversal/common",
-    "@nguniversal/express-engine",
-    "@nguniversal/module-map-ngfactory-loader"
-  ]
+  }
 }
