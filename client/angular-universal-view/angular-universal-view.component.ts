@@ -90,7 +90,7 @@ export class AngularUniversalViewComponent implements OnInit, OnDestroy {
     }
 
     openClientSettings() {
-        this.router.navigateByUrl('dashboard/settings/client');
+        this.router.navigate(['dashboard', 'settings'], {queryParams: {section: 'client'}});
     }
 
     goToWebsite() {
