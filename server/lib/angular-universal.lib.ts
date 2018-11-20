@@ -3,6 +3,8 @@ import { join } from 'path';
 import * as express from 'express';
 import * as execa from 'execa';
 
+import { IClientConfig } from '@materia/interfaces';
+
 export class AngularUniversalLib {
     public static isLaunched = false;
     expressApp: any;
@@ -10,7 +12,7 @@ export class AngularUniversalLib {
     angularSourceFolderPath: string;
     angularDistFolderPath: string;
 
-    get clientConfig() {
+    get clientConfig(): IClientConfig {
         return this.app.config.get('dev', 'client');
     }
 
@@ -18,32 +20,34 @@ export class AngularUniversalLib {
         this.expressApp = this.app.server.expressApp;
     }
 
-    enableAngularProdMode() {
+    enableAngularProdMode(): void {
         const angularCore = require(join(this.angularRootFolderPath, 'node_modules', '@angular', 'core'));
         // Faster server renders w/ Prod mode (dev mode never needed)
         angularCore.enableProdMode();
     }
 
-    async getAngularPaths() {
-        if (this.clientConfig && this.clientConfig.dist && this.isAngularProject()) {
-            const angularJson = await this.getAngularConfig();
-            this.angularRootFolderPath = join(this.app.path, this.clientConfig.src);
+    getAngularPaths(): Promise<void> {
+        if (this.clientConfig && this.clientConfig.www && this.isAngularProject()) {
+            return this.getAngularConfig().then((angularJson) => {
+                this.angularRootFolderPath = join(this.app.path, this.clientConfig.packageJsonPath);
 
-            // Check if mono or two packages structure
-            if (this.clientConfig.src && !angularJson.projects[angularJson.defaultProject].root) {
-                this.angularSourceFolderPath = this.angularRootFolderPath;
-            } else {
-                this.angularSourceFolderPath = join(this.app.path, angularJson.projects[angularJson.defaultProject].root);
-            }
-            this.angularDistFolderPath = join(this.angularSourceFolderPath, 'dist');
+                // Check if mono or two packages structure
+                if (this.clientConfig.packageJsonPath && ! angularJson.projects[angularJson.defaultProject].root) {
+                    this.angularSourceFolderPath = this.angularRootFolderPath;
+                } else {
+                    this.angularSourceFolderPath = join(this.app.path, angularJson.projects[angularJson.defaultProject].root);
+                }
+                this.angularDistFolderPath = join(this.angularSourceFolderPath, 'dist');
+                return;
+            });
         } else {
-            return false;
+           return Promise.reject(new Error('Client config not found'));
         }
     }
 
     getAngularConfig(): Promise<any> {
         return new Promise((resolve, reject) => {
-            fs.readFile(join(this.app.path, this.clientConfig.src, 'angular.json'), 'utf8', (err, result) => {
+            fs.readFile(join(this.app.path, this.clientConfig.packageJsonPath, 'angular.json'), 'utf8', (err, result) => {
                 if (err) {
                     return reject(err);
                 }
@@ -54,7 +58,7 @@ export class AngularUniversalLib {
 
     isAngularProject(): boolean {
         if (this.clientConfig) {
-            return fs.existsSync(join(this.app.path, this.clientConfig.src, 'angular.json'));
+            return fs.existsSync(join(this.app.path, this.clientConfig.packageJsonPath, 'angular.json'));
         }
         return false;
     }
@@ -63,7 +67,7 @@ export class AngularUniversalLib {
         return fs.existsSync(join(this.angularDistFolderPath, 'server', 'main.js'));
     }
 
-    isSSRLaunched() {
+    isSSRLaunched(): boolean {
         return AngularUniversalLib.isLaunched;
     }
 
@@ -78,15 +82,18 @@ export class AngularUniversalLib {
         return false;
     }
 
-    async launchConnection() {
-        await this.getAngularPaths();
-        if (this.isCompiledForUniversal()) {
-            this.loadAngularDependencies();
-            this.launchSSR();
-        }
+    launchConnection(): Promise<void> {
+        return this.getAngularPaths().then(() => {
+            if (this.isCompiledForUniversal()) {
+                this.loadAngularDependencies();
+                this.launchSSR();
+            }
+        }).catch(err => {
+            return;
+        });
     }
 
-    launchSSR() {
+    launchSSR(): void {
         const universalExpressEngine = require(join(this.angularRootFolderPath, 'node_modules', '@nguniversal/express-engine'));
         const moduleMapNgFactoryLoader = require(
             join(
@@ -128,7 +135,7 @@ export class AngularUniversalLib {
         AngularUniversalLib.isLaunched = true;
     }
 
-    loadAngularDependencies() {
+    loadAngularDependencies(): void {
         try {
             this.loadZoneJs();
             this.loadReflectMetadata();
@@ -139,11 +146,11 @@ export class AngularUniversalLib {
         }
     }
 
-    loadZoneJs() {
+    loadZoneJs(): void {
         require(join(this.angularRootFolderPath, 'node_modules', 'zone.js/dist/zone-node'));
     }
 
-    loadReflectMetadata() {
+    loadReflectMetadata(): void {
         require(join(this.angularRootFolderPath, 'node_modules', 'reflect-metadata'));
     }
 
@@ -186,7 +193,7 @@ export class AngularUniversalLib {
                     }
                 });
             } else {
-                reject({ message: '@angular/cli not found' });
+                return reject({ message: '@angular/cli not found' });
             }
         });
     }

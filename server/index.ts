@@ -12,7 +12,7 @@ export class MateriaAngularUniversal {
         return this.app.config.get('dev', 'client');
     }
 
-    constructor(private app: any, private config: any, private expressApp: any) {
+    constructor(private app: any) {
         this.angularUniversalLib = new AngularUniversalLib(this.app);
     }
 

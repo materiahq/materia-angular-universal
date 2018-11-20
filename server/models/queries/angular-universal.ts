@@ -33,16 +33,17 @@ class AngularUniversal {
         return this.launchSSR();
     }
 
-    async list() {
-        const result = await this.angularUniversalLib.getAngularPaths();
-        if (result === false) {
-            return {isAngular: false, isSSRLaunched: false, isUniversal: false, isCompiledForUniversal: false};
-        }
+    list() {
         const isAngular = this.isAngular();
         const isSSRLaunched = this.isSSRLaunched();
-        const isUniversal = await this.isUniversal();
-        const isCompiledForUniversal = this.isCompiledForUniversal();
-        return Object.assign({}, isAngular, isSSRLaunched, isUniversal, isCompiledForUniversal);
+        return this.angularUniversalLib.getAngularPaths().then(() => {
+            return this.isUniversal();
+        }).then((isUniversal) => {
+            const isCompiledForUniversal = this.isCompiledForUniversal();
+            return Object.assign({}, isAngular, isSSRLaunched, isUniversal, isCompiledForUniversal);
+        }).catch(() => {
+            return Object.assign({}, isAngular, isSSRLaunched, { isUniversal: false, isCompiledForUniversal: false });
+        });
     }
 
     runUniversalSchematics() {
