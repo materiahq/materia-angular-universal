@@ -46,8 +46,11 @@
   },
   "defaultProject": "materia-angular-universal",
   "schematics": {
-		"@schematics/angular:component": {
-			"styleext": "scss"
-		}
-  	}
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  },
+  "cli": {
+    "analytics": "84634ed5-fde5-4e35-8d85-dff80db026ae"
+  }
 }
