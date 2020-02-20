@@ -5,12 +5,12 @@
   "author": "jean-marc.roy@getmateria.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/geoastronaute/materia-angular-universal/issues"
+    "url": "https://github.com/materiahq/materia-angular-universal/issues"
   },
-  "homepage": "https://github.com/geoastronaute/materia-angular-universal#readme",
+  "homepage": "https://github.com/materiahq/materia-angular-universal#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geoastronaute/materia-angular-universal.git"
+    "url": "git+https://github.com/materiahq/materia-angular-universal.git"
   },
   "scripts": {
     "build": "ng build",
